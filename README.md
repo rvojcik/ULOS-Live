@@ -7,6 +7,24 @@ Universal Live(sport) Operating System - ULOS. Live netboot OS based on Linux De
 Small OS which can boot from PXE (netboot) and do some automated tasks. Tasks can be passed to os via Kernel CMDLINE.
 OS boots from network, download tasks / scripts and execute them via SystemD Unit.
 
+# Download pre-builded image
+Look on available releases here on github: [Releases for download](https://github.com/rvojcik/ULOS-Live/releases)
+
+# Build your own
+Just clone the repository and run the build. Run it on compatible environment (Debian or Ubuntu (and its clones), Mint and other Debian Like distribution).
+
+```
+git clone https://github.com/rvojcik/ULOS-Live.git
+cd ULOS-Live/
+git submodule update --init --recursive
+
+# Do whatever changes you want
+
+mkdir mybuild
+sudo make DESTDIR=mybuild all
+```
+Look into `.gitlab-ci.yml` how we build our release.
+
 # Why ?
 Originaly we developed this for deploying servers to production environment in Livesport. We also learn a lot from it. 
 You can use it with Foreman to deploy your images or as recovery netboot system or as base start to create disk-less systems. Now it's used in our infrastructure for various maintenance tasks or tests. 
