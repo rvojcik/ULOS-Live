@@ -1,0 +1,63 @@
+
+ulos_mountroot()
+{
+    configure_networking
+
+	# DNS Support
+	if [ -f /run/net-*.conf ] ; then
+        # Read information about IFACE
+		. $(ls -1 /run/net-*.conf | head -n1)
+		[ -z $IPV4DNS0 ] || echo "nameserver $IPV4DNS0" >> /etc/resolv.conf
+		[ -z $IPV4DNS1 ] || echo "nameserver $IPV4DNS1" >> /etc/resolv.conf
+		[ -z $DNSDOMAIN ] || echo "search $DNSDOMAIN" >> /etc/resolv.conf
+
+	else
+		echo "Unable to find networking configuration"
+		panic
+		exit 1
+	fi
+    squash_file=/root.squash
+
+    mkdir -p $rootmnt
+    mount -t tmpfs -o size=5g tmpfs $rootmnt
+
+    wget $ROOT -O $squash_file
+    unsquashfs -f -d $rootmnt $squash_file
+
+    # Clean
+    rm -rf $squash_file
+
+	# Create /etc/network/interfaces configuration
+	mkdir -p $rootmnt/etc/network/
+	echo -e "# Dynamic Configuration from initrd\nauto $DEVICE\nallow-hotplug $DEVICE\niface $DEVICE inet dhcp\n" > $rootmnt/etc/network/interfaces
+
+}
+
+
+# In order to help 
+mount_top()
+{
+    # Note, also called directly in case it's overridden.
+    echo ""
+    echo "################################################"
+    echo "###### Live Squash mount  (by Wiro) ############"
+    echo "################################################"
+}
+
+mount_premount()
+{
+    # Note, also called directly in case it's overridden.
+    echo "Premount stage is executed"
+}
+
+mountroot()
+{
+    echo "MOUNT stage is executed"
+    ulos_mountroot
+}
+
+mount_bottom()
+{
+    echo "Bottom mount stage is executed"
+}
+

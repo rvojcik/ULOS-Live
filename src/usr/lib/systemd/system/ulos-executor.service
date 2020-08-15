@@ -1,0 +1,16 @@
+# This is service for run tasks after boot
+# provided in kernel cmdline
+
+[Unit]
+Description=Execute tasks provided in kernel cmdline
+After=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/opt/ulos/bin/boot-executor.sh
+ExecReload=/bin/true
+WorkingDirectory=/opt/ulos
+
+[Install]
+WantedBy=multi-user.target

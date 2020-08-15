@@ -1,0 +1,15 @@
+# This is service for configuring access after boot
+
+[Unit]
+Description=Configure access to Live OS
+After=network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/opt/ulos/bin/access-configuration.sh
+ExecReload=/bin/true
+WorkingDirectory=/opt/ulos
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,33 @@
+<%#
+name: ULOS default
+snippet: false
+model: ProvisioningTemplate
+kind: PXELinux
+-%>
+#
+# This file was deployed via '<%= template_name %>' template
+#
+# Supported host/hostgroup parameters:
+#
+# blacklist = module1, module2
+#   Blacklisted kernel modules
+#
+# lang = en_US
+#   System locale
+#
+<%
+  options = ['console=ttyS0', 'console=tty0']
+  if host_param('blacklist')
+    options << host_param('blacklist').split(',').collect{|x| "#{x.strip}.blacklist=yes"}.join(' ')
+  end
+  options = options.join(' ')
+-%>
+
+DEFAULT ulos
+
+LABEL ulos
+    KERNEL tools/vmlinuz
+    APPEND initrd=tools/initrd.gz sshkey_src=http://storage/ssh/keys.txt boot=live root=http://storage/debian-buster.img run_task=<%= foreman_url('provision')%> <%= options %>
+    IPAPPEND 2
+
+<%= snippet_if_exists(template_name + " custom menu") %>

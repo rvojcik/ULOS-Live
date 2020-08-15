@@ -1,0 +1,14 @@
+#!/bin/sh
+
+PREREQ=""
+
+prereqs()
+{
+	echo "$PREREQ"
+}
+
+. /usr/share/initramfs-tools/scripts/functions
+. /usr/share/initramfs-tools/hook-functions
+
+cp -rfp /usr/lib/x86_64-linux-gnu/libnss_dns-2.28.so ${DESTDIR}/usr/lib/x86_64-linux-gnu/
+cp -rfp /usr/lib/x86_64-linux-gnu/libnss_files-2.28.so ${DESTDIR}/usr/lib/x86_64-linux-gnu/
