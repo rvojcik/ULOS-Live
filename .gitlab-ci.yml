@@ -1,0 +1,21 @@
+variables:
+  IMAGE_DIR: image-$CI_COMMIT_REF_NAME
+  GIT_SUBMODULE_STRATEGY: recursive
+
+stages:
+- build
+
+Build:
+  stage: build
+  image: debian:stable
+  only:
+  - tags
+  script:
+  - apt-get update && apt-get install make
+  - mkdir $IMAGE_DIR
+  - echo "$CI_COMMIT_REF_NAME" > src/etc/ulos-release
+  - sed -i "s/ulos-version/$CI_COMMIT_REF_NAME/" src/etc/issue*
+  - make DESTDIR=$IMAGE_DIR all
+  artifacts:
+    paths:
+    - 'image-*/*'
