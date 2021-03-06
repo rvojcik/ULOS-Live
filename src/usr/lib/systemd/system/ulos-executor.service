@@ -3,10 +3,10 @@
 
 [Unit]
 Description=Execute tasks provided in kernel cmdline
-After=network.target
+After=network.target systemd-journald.service systemd-timesyncd.service
 
 [Service]
-Type=oneshot
+Type=idle
 RemainAfterExit=yes
 ExecStart=/opt/ulos/bin/boot-executor.sh
 ExecReload=/bin/true
