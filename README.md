@@ -54,6 +54,8 @@ and automatic job execution.
 
 * `boot=`, if you want to boot live image use `boot=live`
 * `root=`, when using `boot=live` you can provide image address as root parameter. System automatically configure networking and download root image using wget
+* `ulos_serial_console`, set serial console for output from executor tasks (default `ttyS0`)
+* `ulos_tty_console`, set tty console for output from executor tasks (default `tty0`)
 
 Initrd image support DNS resolution so it's not a problem to use DNS names instead of IPs.
 

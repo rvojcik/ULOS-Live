@@ -18,9 +18,20 @@ for x in $(cat /proc/cmdline); do
         root_pass=*)
             root_pass=${x#root_pass=}
         ;;
+        ulos_serial_console=*)
+            serial_console=${x#ulos_serial_console=}
+        ;;
+        ulos_tty_console=*)
+            tty_console=${x#ulos_tty_console=}
+        ;;
     esac
 done
 
+# Set console outputs
+serial_console=${serial_console:-/dev/ttyS0}
+tty_console=${tty_console:-/dev/tty0}
+
+echo "ULOS: Setting up access" | tee $tty_console $serial_console
 
 if [[ "$sshkey_src" == "" ]] && [[ "$root_pass" == "" ]]; then
     echo "NO ssh_key specified. Nothing to do"
